@@ -30,6 +30,7 @@ namespace HelsinkiCityBikeApp.Server.Controllers
             }
             return Ok(station);
         }
+
         [HttpPost]
         public IActionResult PostStation(Station station)
         {

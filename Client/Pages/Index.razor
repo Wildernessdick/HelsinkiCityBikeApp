@@ -2,12 +2,11 @@
 @using System.Net.Http;
 @inject HttpClient Http;
 
-
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
-<h3>@(isRequestSuccessful ? "Server is up" : "Server is down")</h3>
+<h3>@(isRequestSuccessful ? "Server is " : "Server is ")<img src="@(isRequestSuccessful ? "/img/true.png" : "/img/false.png")" /></h3>
 
 @code {
     private bool isRequestSuccessful = false;

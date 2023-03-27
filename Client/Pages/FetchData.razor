@@ -1,47 +1,38 @@
 ﻿@page "/fetchdata"
-@using HelsinkiCityBikeApp.Shared
-@inject HttpClient Http
 
-<PageTitle>Weather forecast</PageTitle>
+@using System.Net.Http;
+@inject HttpClient Http;
+@using HelsinkiCityBikeApp.Shared;
 
-<h1>Weather forecast</h1>
+<PageTitle>Index</PageTitle>
 
-<p>This component demonstrates fetching data from the server.</p>
+<h1>Hello, world!</h1>
 
-@if (forecasts == null)
+
+@if (stations != null)
 {
-    <p><em>Loading...</em></p>
+    <div>
+        @foreach (var station in stations)
+        {
+            <div>@station.Name</div>
+        }
+    </div>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <p>Loading</p>
 }
-
 @code {
-    private WeatherForecast[]? forecasts;
+    private bool isRequestSuccessful = false;
+    private List<Station> stations = new List<Station>();
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        var response = await Http.GetAsync("api/stations");
+        isRequestSuccessful = response.IsSuccessStatusCode;
+        if (isRequestSuccessful)
+        {
+            stations = await Http.GetFromJsonAsync<List<Station>>("api/stations");
+        }
     }
 }
