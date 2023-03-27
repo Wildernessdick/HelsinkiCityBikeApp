@@ -13,7 +13,8 @@
     @if(list != null)
     {
         <div class="childDiv">Lorem ipsum</div>
-        @foreach (var trip in list.Take(2))
+
+        @foreach (var trip in list)
         {
             <div class="childDiv">
                     <p >@trip.Departure</p>
@@ -43,13 +44,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await Http.GetAsync("api/stations");
+        var response = await Http.GetAsync("api/trips");
         isRequestSuccessful = response.IsSuccessStatusCode;
+        Console.WriteLine(isRequestSuccessful);
         if (isRequestSuccessful)
         {
             list = await Http.GetFromJsonAsync<List<Trip>>("api/trips");
-            Console.WriteLine(list);
+
         }
+        else
+        {
+            Console.WriteLine("Error");
+        }
+
+
 
     }
 }

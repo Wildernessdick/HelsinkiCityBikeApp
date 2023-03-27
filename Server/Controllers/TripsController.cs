@@ -16,17 +16,19 @@ namespace HelsinkiCityBikeApp.Server.Controllers
         [HttpGet]
         public async Task<ActionResult> GetTrips()
         {
-            var trips = await _context.Trips.ToListAsync();
+            var trips = await _context.Trips.Where(x => x.ID == 1).ToListAsync();
             return Ok(trips);
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<Trip>> GetTrip(int id)
         {
             var trip = await _context.Trips.FindAsync(id);
+
             if (trip == null)
             {
                 return NotFound();
             }
+
             return trip;
         }
         [HttpPost]
