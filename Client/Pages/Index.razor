@@ -4,9 +4,16 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
 
-<h3>@(isRequestSuccessful ? "Server is " : "Server is ")<img src="@(isRequestSuccessful ? "/img/true.png" : "/img/false.png")" /></h3>
+<div class="mainDiv">
+
+        <div class="childDiv">
+        <h1>Hello, biker!</h1>
+
+        <h3>@(isRequestSuccessful ? "Server is " : "Server is ")<img src="@(isRequestSuccessful ? "/img/true.png" : "/img/false.png")" /></h3>
+        </div>
+    
+</div>
 
 @code {
     private bool isRequestSuccessful = false;

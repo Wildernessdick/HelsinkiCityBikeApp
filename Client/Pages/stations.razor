@@ -11,14 +11,14 @@
 
 @if (list != null)
 {
-    <div class="stationsDiv">
+    <div class="mainDiv">
         @foreach (var station in list)
         {
-            <div class="stationDiv">
+            <div class="childDiv">
                 <p class="PstationName">@station.Nimi</p>
                 <p class="PstationAddres">@station.Osoite</p>
-<p class="PstationBikes">@station.Kapasiteet</p>
-                </div>
+                <p class="PstationBikes">@station.Kapasiteet</p>
+             </div>
         }
     </div>
 }
