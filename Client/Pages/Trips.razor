@@ -10,16 +10,46 @@
 
 <div class="mainDiv">
 
-    <div class="childDiv">
-        <div class="loadingDiv">
-            <img src="/img/loading.gif" width="150" />
-        </div> 
+    @if(list != null)
+    {
+        <div class="childDiv">Lorem ipsum</div>
+        @foreach (var trip in list.Take(2))
+        {
+            <div class="childDiv">
+                    <p >@trip.Departure</p>
+                    <p>@trip.DepartureStationName</p>
+                    <p>@trip.Duration</p>
+                    <p>@trip.CoveredDistance</p>
+                    <p>@trip.Return</p>
+                    <p>@trip.DepartureStationName</p>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="childDiv"><h1>No data...</h1></div>
+    }
+    
+
     </div>
 
-</div>
+
 
 
 
 @code {
+    private bool isRequestSuccessful = false;
+    private List<Trip> list = new List<Trip>();
 
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync("api/stations");
+        isRequestSuccessful = response.IsSuccessStatusCode;
+        if (isRequestSuccessful)
+        {
+            list = await Http.GetFromJsonAsync<List<Trip>>("api/trips");
+            Console.WriteLine(list);
+        }
+
+    }
 }

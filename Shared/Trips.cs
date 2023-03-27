@@ -1,6 +1,6 @@
 ﻿namespace HelsinkiCityBikeApp.Shared
 {
-    public class Trips
+    public class Trip
     {
         public int ID { get; set; }
         public string? Departure { get; set; }

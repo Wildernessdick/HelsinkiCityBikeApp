@@ -14,12 +14,13 @@ namespace HelsinkiCityBikeApp.Server.Controllers
             _context = context;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Trips>>> GetTrips()
+        public async Task<ActionResult> GetTrips()
         {
-            return await _context.Trips.ToListAsync();
+            var trips = await _context.Trips.ToListAsync();
+            return Ok(trips);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Trips>> GetTrip(int id)
+        public async Task<ActionResult<Trip>> GetTrip(int id)
         {
             var trip = await _context.Trips.FindAsync(id);
             if (trip == null)
@@ -29,14 +30,14 @@ namespace HelsinkiCityBikeApp.Server.Controllers
             return trip;
         }
         [HttpPost]
-        public async Task<ActionResult<Trips>> PostTrip(Trips trip)
+        public async Task<ActionResult<Trip>> PostTrip(Trip trip)
         {
             _context.Trips.Add(trip);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetTrip", new { id = trip.ID }, trip);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTrip(int id, Trips trip)
+        public async Task<IActionResult> PutTrip(int id, Trip trip)
         {
             if (id != trip.ID)
             {
@@ -61,7 +62,7 @@ namespace HelsinkiCityBikeApp.Server.Controllers
             return NoContent();
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Trips>> DeleteTrip(int id)
+        public async Task<ActionResult<Trip>> DeleteTrip(int id)
         {
             var trip = await _context.Trips.FindAsync(id);
             if (trip == null)

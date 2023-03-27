@@ -9,6 +9,6 @@ namespace HelsinkiCityBikeApp.Server.Data
         {
         }
         public DbSet<Station> Stations { get; set; }
-        public DbSet<Trips> Trips { get; set; }
+        public DbSet<Trip> Trips { get; set; }
     }
 }
