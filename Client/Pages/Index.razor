@@ -1,9 +1,21 @@
 ﻿@page "/"
+@using System.Net.Http;
+@inject HttpClient Http;
+
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<h3>@(isRequestSuccessful ? "Server is up" : "Server is down")</h3>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+    private bool isRequestSuccessful = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync("api/stations");
+        isRequestSuccessful = response.IsSuccessStatusCode;
+        Console.WriteLine(response);
+    }
+}

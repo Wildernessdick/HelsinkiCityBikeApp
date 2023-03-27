@@ -1,6 +1,7 @@
 ﻿using HelsinkiCityBikeApp.Server.Data;
 using HelsinkiCityBikeApp.Shared;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HelsinkiCityBikeApp.Server.Controllers
 {
@@ -14,9 +15,10 @@ namespace HelsinkiCityBikeApp.Server.Controllers
             _context = context;
         }
         [HttpGet]
-        public IActionResult GetStations()
+        public async Task<IActionResult> GetStations()
         {
-            return Ok(_context.Stations);
+            var stations = await _context.Stations.ToListAsync();
+            return Ok(stations);
         }
         [HttpGet("{id}")]
         public IActionResult GetStation(int id)
