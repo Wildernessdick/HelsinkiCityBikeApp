@@ -1,0 +1,43 @@
+﻿@page "/stations"
+
+@using System.Net.Http;
+@inject HttpClient Http;
+@using HelsinkiCityBikeApp.Shared;
+
+<PageTitle>Stations</PageTitle>
+
+
+
+
+@if (list != null)
+{
+    <div class="stationsDiv">
+        @foreach (var station in list)
+        {
+            <div class="stationDiv">
+                <p class="PstationName">@station.Nimi</p>
+                <p class="PstationAddres">@station.Osoite</p>
+<p class="PstationBikes">@station.Kapasiteet</p>
+                </div>
+        }
+    </div>
+}
+else
+{
+    <h2><img src="/img/loading.gif" width="150" /></h2>
+}
+@code {
+    private bool isRequestSuccessful = false;
+    private List<Station> list = new List<Station>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync("api/stations");
+        isRequestSuccessful = response.IsSuccessStatusCode;
+        if (isRequestSuccessful)
+        {
+            list = await Http.GetFromJsonAsync<List<Station>>("api/stations");
+        }
+        
+    }
+}
