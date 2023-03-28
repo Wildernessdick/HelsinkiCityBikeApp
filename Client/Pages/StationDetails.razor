@@ -21,7 +21,7 @@
                         <th>Station Name</th>
                         <th>Station Address</th>
                         <th>Station Capacity</th>
- 
+            
                     </tr>
                 </thead>
                 <tbody>
@@ -31,7 +31,7 @@
                         <td>@station.Nimi</td>
                         <td>@station.Osoite</td>
                         <td>@station.Kapasiteet</td>
-            
+              
                     </tr>
                     <tr>
                         <td colspan="7">
@@ -41,23 +41,40 @@
                 </tbody>
             </table>
         </div>
+        <div class="childDiv">
+            <h3>@station.Name</h3>
+            <p>@startingJourneyCount trip(s) started here</p>
+            <p>@endingJourneyCount trip(s) ended here</p>
+            <p>Average distance of starting trips: @string.Format("{0:0.##}", startAverageDistance / 1000) km</p>
+            <p>Average distance of ending trips: @string.Format("{0:0.##}", endAverageDistance / 1000) km</p>
+
+        </div>
+
+
     }
     else
     {
-        <p>No station found with ID @ID</p>
+        <div class="childDiv">  <img src="/img/loading.gif" width="150" /></div>
     }
 </div>
 
 @code {
     [Parameter]
     public int ID { get; set; }
-
+    //map stuff
     private Station station;
     private Map.LoadParameters parameters;
+    //counters for number of trips
+    private int startingJourneyCount;
+    private int endingJourneyCount;
+    private double startAverageDistance;
+    private double endAverageDistance;
+
 
     protected override async Task OnInitializedAsync()
     {
         //Here we are using the HttpClient to get the data from the API, about the station with the ID we got from the URL
+        /*https://github.com/ichim/LeafletForBlazor-NuGet*/
         station = await Http.GetFromJsonAsync<Station>($"api/stations/{ID}");
         parameters = new Map.LoadParameters
             {
@@ -68,8 +85,25 @@
                     longitude = station.X
                 },
                 zoom_level = 20,
-               
+
             };
+        //Here we get number of trips starting from and ending at the station, from TOTAL trips from the API.. so stay white me while it loads it up
+        var response = await Http.GetAsync($"api/trips/startStation/{ID}");
+        var tripsStartingFromStation = await response.Content.ReadFromJsonAsync<List<Trip>>();
+        startingJourneyCount = tripsStartingFromStation?.Count ?? 0;
+
+        response = await Http.GetAsync($"api/trips/endStation/{ID}");
+        var tripsEndingAtStation = await response.Content.ReadFromJsonAsync<List<Trip>>();
+        endingJourneyCount = tripsEndingAtStation?.Count ?? 0;
+
+        response = await Http.GetAsync($"api/trips/startStation/{station.ID}/averageDistance");
+        startAverageDistance = await response.Content.ReadFromJsonAsync<double>();
+
+        response = await Http.GetAsync($"api/trips/endStation/{station.ID}/averageDistance");
+        endAverageDistance = await response.Content.ReadFromJsonAsync<double>();
+
+
     }
-    /*https://github.com/ichim/LeafletForBlazor-NuGet*/
+  
+   
 }

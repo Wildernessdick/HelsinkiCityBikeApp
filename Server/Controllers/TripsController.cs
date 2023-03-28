@@ -32,6 +32,41 @@ namespace HelsinkiCityBikeApp.Server.Controllers
 
             return trip;
         }
+        //counts how many trips starts from the station
+        [HttpGet("startStation/{stationId}")]
+        public async Task<ActionResult<IEnumerable<Trip>>> GetTripsStartingFromStation(int stationId)
+        {
+            return await _context.Trips.Where(t => t.DepartureStationId == stationId).ToListAsync();
+        }
+        //count how many trips ends at the station
+        [HttpGet("endStation/{stationId}")]
+        public async Task<ActionResult<IEnumerable<Trip>>> GetTripsEndingAtStation(int stationId)
+        {
+            return await _context.Trips.Where(t => t.ReturnStationId == stationId).ToListAsync();
+        }
+        //counts avarage distance of trips starting from the station
+        [HttpGet("startStation/{stationId}/averageDistance")]
+        public ActionResult<double> GetAverageDistanceFromStartStation(int stationId)
+        {
+            var tripsStartingFromStation = _context.Trips.Where(t => t.DepartureStationId == stationId);
+            if (!tripsStartingFromStation.Any())
+            {
+                return NotFound();
+            }
+            return tripsStartingFromStation.Average(t => t.CoveredDistance);
+        }
+        //counts avarage distance of trips ending at the station
+        [HttpGet("endStation/{stationId}/averageDistance")]
+        public ActionResult<double> GetAverageDistanceToEndStation(int stationId)
+        {
+            var tripsEndingAtStation = _context.Trips.Where(t => t.ReturnStationId == stationId);
+            if (!tripsEndingAtStation.Any())
+            {
+                return NotFound();
+            }
+            return tripsEndingAtStation.Average(t => t.CoveredDistance);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Trip>> PostTrip(Trip trip)
         {
