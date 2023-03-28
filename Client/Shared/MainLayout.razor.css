@@ -6,6 +6,8 @@
 
 main {
     flex: 1;
+    overflow-y: auto;
+    height: calc(100vh - 3.5rem);
 }
 
 .sidebar {

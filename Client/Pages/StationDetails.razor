@@ -1,63 +1,59 @@
-﻿@page "/stationsDetails/{ID}"
+﻿@page "/stationsDetails/{ID:int}"
 @using HelsinkiCityBikeApp.Shared;
 @using System.Net.Http;
 @inject HttpClient Http;
 @inject NavigationManager NavigationManager
 
 
-<PageTitle>Stations Details</PageTitle>
+<PageTitle>Station Details</PageTitle>
 
 
 <div class="mainDiv">
 
-   @if(list != null){
-    <div class="childDiv">
-        <table>
-            <thead>
-                <tr>
-                    <th>Station FID</th>
-                    <th>Station ID</th>
-                    <th>Station Name</th>
-                    <th>Station Address</th>
-                    <th>Station Capacity</th>
-                    <th>City</th>
-                    <th>Operator</th>
+    @if (station != null)
+    {
+        <div class="childDiv">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Station FID</th>
+                        <th>Station ID</th>
+                        <th>Station Name</th>
+                        <th>Station Address</th>
+                        <th>Station Capacity</th>
+                        <th>Latitude</th>
+                        <th>longitude</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@station.FID</td>
+                        <td>@station.ID</td>
+                        <td>@station.Nimi</td>
+                        <td>@station.Osoite</td>
+                        <td>@station.Kapasiteet</td>
+                        <td>@station.X</td>
+                        <td>@station.Y</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p>No station found with ID @ID</p>
+    }
 
-                </tr>
-            </thead>
-            <tbody>
-                    @foreach (var station in list)
-                    {
-                        <tr>
-                            <td>@station.FID</td>
-                            <td>@station.ID</td>
-                            <td>@station.Nimi</td>
-                            <td>@station.Osoite</td>
-                            <td>@station.Kapasiteet</td>
-                            <td>@(station.Kaupunki ?? station.Stad)</td>
-                            <td>@station.Operaattor</td>
-                        </tr>
-                    }
-
-            </tbody>
-        </table>
-    </div>
-   }
 </div>
+
 @code {
     [Parameter]
     public int ID { get; set; }
 
-
-    private List<Station>? list;
-
-
+    private Station station;
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine(ID);
-        list = await Http.GetFromJsonAsync<List<Station>>($"api/stations/{ID}");
-           
-        
+        station = await Http.GetFromJsonAsync<Station>($"api/stations/{ID}");
     }
 }

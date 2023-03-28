@@ -22,7 +22,7 @@ namespace HelsinkiCityBikeApp.Server.Controllers
             return Ok(stations);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Station>> GetStation(int id)
+        public IActionResult GetStation(int id)
         {
             var station = _context.Stations.FirstOrDefault(s => s.ID == id);
             if (station == null)
