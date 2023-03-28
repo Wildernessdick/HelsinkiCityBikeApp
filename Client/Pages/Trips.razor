@@ -1,63 +1,90 @@
 ﻿@page "/trips"
-
-
 @using System.Net.Http;
 @inject HttpClient Http;
 @using HelsinkiCityBikeApp.Shared;
 
 <PageTitle>Trips</PageTitle>
+<div class="childDiv">
 
+    <label>Depature Station Name</label>
+    <input type="text" class="form-control" @bind-value="depatureStationName" />
+    <label>Return Station Name</label>
+    <input type="text" class="form-control" @bind-value="returnStationName" />
+    <label>Min Covered Distance</label>
+    <input type="number" class="form-control" @bind-value="minCoveredDistance" />
+    <label>Depature Station Id</label>
+    <input type="number" class="form-control" @bind-value="depatureStationId" />
+    <button class="btn btn-primary" @onclick="FilterList">Filter</button>
+</div>
 
 <div class="mainDiv">
 
-    @if(list != null)
+    @if (list != null)
     {
-        <div class="childDiv">Lorem ipsum</div>
-
         @foreach (var trip in list)
         {
-            <div class="childDiv">
-                    <p >@trip.Departure</p>
-                    <p>@trip.DepartureStationName</p>
-                    <p>@trip.Duration</p>
-                    <p>@trip.CoveredDistance</p>
-                    <p>@trip.Return</p>
-                    <p>@trip.DepartureStationName</p>
-            </div>
-        }
-    }
+        <div class="childDiv">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Departure</th>
+                        <th>Departure Station Name</th>
+                        <th>Duration (sec)</th>
+                        <th>Covered Distance (m)</th>
+           
+                        <th>Return</th>
+                        <th>Return Station Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+               
+                        <tr>
+                            <td>@trip.Departure</td>
+                            <td>@trip.DepartureStationName</td>
+                            <td>@trip.Duration </td>
+                            <td>@trip.CoveredDistance</td>
+                    
+                            <td>@trip.Return</td>
+                            <td>@trip.ReturnStationName</td>
+                        </tr>
+                 
+                </tbody>
+            </table>
+        </div>
+        }       }
     else
     {
-        <div class="childDiv"><h1>No data...</h1></div>
+        <div class="childDiv">  <h2><img src="/img/loading.gif" width="150" /></h2></div>
     }
-    
 
-    </div>
-
-
-
-
+</div>
 
 @code {
     private bool isRequestSuccessful = false;
     private List<Trip> list = new List<Trip>();
+    private string url = "api/trips?";
+    private int takeCount = 10;
+    private string depatureStationName = "";
+    private string returnStationName = "";
+    private int minCoveredDistance = 0;
+    private int depatureStationId = 0;
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await Http.GetAsync("api/trips");
+        var response = await Http.GetAsync("api/trips?");
         isRequestSuccessful = response.IsSuccessStatusCode;
-        Console.WriteLine(isRequestSuccessful);
-        if (isRequestSuccessful)
+        Console.WriteLine("api is up " + isRequestSuccessful);
+    }
+
+    private async Task FilterList()
+    {
+        var queryParams = $"depatureStationName={depatureStationName}&returnStationName={returnStationName}&minCoveredDistance={minCoveredDistance}&depatureStationId={depatureStationId}&take={takeCount}";
+        var response = await Http.GetAsync($"{url}{queryParams}");
+        if (response.IsSuccessStatusCode)
         {
-            list = await Http.GetFromJsonAsync<List<Trip>>("api/trips");
-
+            Console.WriteLine("Filtering error");
+            list = await response.Content.ReadFromJsonAsync<List<Trip>>();
         }
-        else
-        {
-            Console.WriteLine("Error");
-        }
-
-
-
     }
 }

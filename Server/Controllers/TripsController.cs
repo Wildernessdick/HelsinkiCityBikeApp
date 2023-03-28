@@ -16,7 +16,8 @@ namespace HelsinkiCityBikeApp.Server.Controllers
         [HttpGet]
         public async Task<ActionResult> GetTrips()
         {
-            var trips = await _context.Trips.Where(x => x.ID == 1).ToListAsync();
+            //because there is 3million trips in the database, we only want to return 100 :)
+            var trips = await _context.Trips.Take(100).ToListAsync();
             return Ok(trips);
         }
         [HttpGet("{id}")]
