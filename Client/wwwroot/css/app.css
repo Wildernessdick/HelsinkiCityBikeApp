@@ -5,8 +5,9 @@
 }
 
 .logo {
-    padding: 20px;
-    height: 150px;
+ 
+    display: flex;
+    justify-content: center;
 }
 
 .loadingDiv {
@@ -29,12 +30,13 @@
 .childDiv {
     padding: 20px;
     margin-bottom: 10px;
-    border: 5px solid #457b9d;
-    background-color: #a8dadc;
+    border: 5px solid #fff8e8;
+    background-color: #457b9d;
     border-radius: 25px;
     flex-basis: calc(33.33% - 20px); /* set initial width of child elements */
     //max-width: calc(33.33% - 20px); /* set maximum width of child elements */
     //overflow-x: auto;
+   
 }
 
 /* Styles for screens smaller than 768px */
@@ -66,8 +68,9 @@ th, td {
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #a8dadc;
     font-weight: bold;
+    color: black;
 }
 
 .btn {
@@ -82,6 +85,7 @@ html, body {
     background-image: url("/img/background.png");
     background-attachment: fixed;
     background-position: center;
+    color: #fff8e8;
 }
 
 h1:focus {
