@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelsinkiCityBikeApp.Server", "Server\HelsinkiCityBikeApp.Server.csproj", "{4A049FA8-BC70-4D65-8F46-43B4D948EB87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelsinkiCityBikeApp.Server", "Server\HelsinkiCityBikeApp.Server.csproj", "{4A049FA8-BC70-4D65-8F46-43B4D948EB87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelsinkiCityBikeApp.Client", "Client\HelsinkiCityBikeApp.Client.csproj", "{22C777B6-03A5-4D05-ACBA-EE461569046E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelsinkiCityBikeApp.Client", "Client\HelsinkiCityBikeApp.Client.csproj", "{22C777B6-03A5-4D05-ACBA-EE461569046E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelsinkiCityBikeApp.Shared", "Shared\HelsinkiCityBikeApp.Shared.csproj", "{9777625B-62B1-4440-A43B-B3A48EB11038}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelsinkiCityBikeApp.Shared", "Shared\HelsinkiCityBikeApp.Shared.csproj", "{9777625B-62B1-4440-A43B-B3A48EB11038}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

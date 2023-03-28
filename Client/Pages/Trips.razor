@@ -1,7 +1,8 @@
 ﻿@page "/trips"
 @using System.Net.Http;
-@inject HttpClient Http;
 @using HelsinkiCityBikeApp.Shared;
+@inject NavigationManager NavigationManager
+@inject HttpClient Http;
 
 <PageTitle>Trips</PageTitle>
 <div class="childDiv">
@@ -27,26 +28,27 @@
             <table>
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Departure</th>
                         <th>Departure Station Name</th>
-                        <th>Duration (sec)</th>
-                        <th>Covered Distance (m)</th>
+              
            
                         <th>Return</th>
                         <th>Return Station Name</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
 
                
                         <tr>
+                            <td>@trip.ID</td>
                             <td>@trip.Departure</td>
-                            <td>@trip.DepartureStationName</td>
-                            <td>@trip.Duration </td>
-                            <td>@trip.CoveredDistance</td>
+                            <td>@trip.DepartureStationName</td>                    
                     
                             <td>@trip.Return</td>
                             <td>@trip.ReturnStationName</td>
+                            <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo($"/tripDetails/{trip.ID}"))">Details</button>
                         </tr>
                  
                 </tbody>

@@ -24,7 +24,7 @@ namespace HelsinkiCityBikeApp.Server.Controllers
         [HttpGet("{id}")]
         public IActionResult GetStation(int id)
         {
-            var station = _context.Stations.Find(id);
+            var station = _context.Stations.FirstOrDefault(s => s.ID == id);
             if (station == null)
             {
                 return NotFound();

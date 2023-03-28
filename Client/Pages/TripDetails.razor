@@ -1,0 +1,21 @@
+﻿@page "/tripdetails/{ID}"
+@using HelsinkiCityBikeApp.Shared;
+@using System.Net.Http;
+@inject HttpClient Http;
+@inject NavigationManager NavigationManager
+
+<PageTitle>Trip Details</PageTitle>
+
+
+<div class="mainDiv">
+
+    <div class="childDiv">
+        <h3>Trip Details</h3>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string ID { get; set; }
+
+    // Rest of the component code here
+}

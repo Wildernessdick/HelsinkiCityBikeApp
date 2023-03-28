@@ -1,8 +1,8 @@
 ﻿@page "/stations"
-
+@using HelsinkiCityBikeApp.Shared;
 @using System.Net.Http;
 @inject HttpClient Http;
-@using HelsinkiCityBikeApp.Shared;
+@inject NavigationManager NavigationManager
 
 <PageTitle>Stations</PageTitle>
 
@@ -34,6 +34,7 @@
                             <th>Station Name</th>
                             <th>Station Address</th>
                             <th>Station Capacity</th>
+                            <th>Station Details</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,10 +43,12 @@
                             <td>@station.Nimi</td>
                             <td>@station.Osoite</td>
                             <td>@station.Kapasiteet</td>
+                            <td>
+                                <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo($"/stationsDetails/{station.ID}"))">Details</button>
+
+                            </td>
                         </tr>
-                        <tr>
-                            <td colspan="4"><p>Map coming soon..</p></td>
-                        </tr>
+            
                     </tbody>
                 </table>
             </div>
