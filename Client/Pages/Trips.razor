@@ -16,6 +16,7 @@
     <label>Depature Station Id</label>
     <input type="number" class="form-control" @bind-value="depatureStationId" />
     <button class="btn btn-primary" @onclick="FilterList">Filter</button>
+    <button class="btn btn-danger ml-2" @onclick="ClearFilters">Clear Filters</button>
 </div>
 
 <div class="mainDiv">
@@ -66,8 +67,8 @@
     private bool isRequestSuccessful = false;
     private List<Trip> list = new List<Trip>();
     private List<Trip> filteredList = new List<Trip>();
-    private string url = "api/trips?";
-    private int takeCount = 10;
+   
+    private int takeCount = 100;
     private string depatureStationName = "";
     private string returnStationName = "";
     private int minCoveredDistance = 0;
