@@ -20,9 +20,9 @@
 
 <div class="mainDiv">
 
-    @if (list != null)
+    @if (filteredList != null)
     {
-        @foreach (var trip in list)
+        @foreach (var trip in filteredList)
         {
         <div class="childDiv">
             <table>
@@ -65,6 +65,7 @@
 @code {
     private bool isRequestSuccessful = false;
     private List<Trip> list = new List<Trip>();
+    private List<Trip> filteredList = new List<Trip>();
     private string url = "api/trips?";
     private int takeCount = 10;
     private string depatureStationName = "";
@@ -74,17 +75,36 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await FilterList();
-    }
-
-    private async Task FilterList()
-    {
-        var queryParams = $"depatureStationName={depatureStationName}&returnStationName={returnStationName}&minCoveredDistance={minCoveredDistance}&depatureStationId={depatureStationId}&take={takeCount}";
-        var response = await Http.GetAsync($"{url}{queryParams}");
+        var response = await Http.GetAsync("api/trips");
         if (response.IsSuccessStatusCode)
         {
-            Console.WriteLine("Filtering error");
+        
             list = await response.Content.ReadFromJsonAsync<List<Trip>>();
+            FilterList();
         }
+    }
+
+     
+    
+    private void FilterList()
+    {
+        filteredList = list
+            .Where(trip =>
+                (string.IsNullOrEmpty(depatureStationName) || trip.DepartureStationName.ToUpper().StartsWith(depatureStationName.ToUpper()))
+                && (string.IsNullOrEmpty(returnStationName) || trip.ReturnStationName.ToUpper().StartsWith(returnStationName.ToUpper()))
+                && (trip.CoveredDistance >= minCoveredDistance)
+                && (depatureStationId == 0 || trip.DepartureStationId == depatureStationId)
+            )
+            .Take(takeCount)
+            .ToList();
+    }
+    private void ClearFilters()
+    {
+        takeCount = 100;
+        depatureStationName = "";
+        returnStationName = "";
+        minCoveredDistance = 0;
+        depatureStationId = 0;
+        FilterList();
     }
 }
