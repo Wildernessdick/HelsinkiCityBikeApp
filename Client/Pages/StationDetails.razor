@@ -21,8 +21,7 @@
                         <th>Station Name</th>
                         <th>Station Address</th>
                         <th>Station Capacity</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
+ 
                     </tr>
                 </thead>
                 <tbody>
@@ -32,8 +31,7 @@
                         <td>@station.Nimi</td>
                         <td>@station.Osoite</td>
                         <td>@station.Kapasiteet</td>
-                        <td>@station.X</td>
-                        <td>@station.Y</td>
+            
                     </tr>
                     <tr>
                         <td colspan="7">
@@ -68,8 +66,8 @@
                     latitude = station.Y,
                     longitude = station.X
                 },
-                zoom_level = 20
-
+                zoom_level = 20,
+               
             };
     }
     /*https://github.com/ichim/LeafletForBlazor-NuGet*/

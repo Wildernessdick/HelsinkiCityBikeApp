@@ -1,6 +1,8 @@
 ﻿@page "/tripdetails/{ID}"
 @using HelsinkiCityBikeApp.Shared;
 @using System.Net.Http;
+@using LeafletForBlazor;
+
 @inject HttpClient Http;
 @inject NavigationManager NavigationManager
 
@@ -24,8 +26,8 @@
                             <th>Return</th>
                             <th>Return Station Name</th>
 
-                        <th>Covered Distance</th>
-                        <th>Duration</th>
+                        <th>Covered Distance (m)</th>
+                        <th>Duration (sec)</th>
                             
                         </tr>
                     </thead>
@@ -46,6 +48,18 @@
                     </tbody>
                 </table>
             </div>
+
+        <div class="childDiv">  
+            
+            <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo($"/stationsDetails/{departureStation.ID}"))">@departureStation.Nimi</button>
+<button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo($"/stationsDetails/{returnStation.ID}"))">@returnStation.Nimi</button>
+            
+        
+        </div>
+
+        <div class="childDiv">   <h2>Departure Station Location</h2>  <Map width="600px" height="600px" Parameters="@departure"></Map></div>
+
+        <div class="childDiv">   <h2>Return Station Location</h2>  <Map width="600px" height="600px" Parameters="@returned"></Map></div>
         }       
     else
     {
@@ -57,9 +71,36 @@
     [Parameter]
     public string ID { get; set; }
     private Trip trip;
+    private Station departureStation;
+    private Station returnStation;
+    private Map.LoadParameters departure;
+    private Map.LoadParameters returned;
 protected override async Task OnInitializedAsync()
     {
         trip = await Http.GetFromJsonAsync<Trip>($"api/Trips/{ID}");
-
+        
+        departureStation = await Http.GetFromJsonAsync<Station>($"api/stations/{trip.DepartureStationId}");
+   
+        
+        departure = new Map.LoadParameters()
+        {
+                location = new Map.Location
+                {
+                    latitude = departureStation.Y,
+                    longitude = departureStation.X
+                },
+                zoom_level = 20,
+        };
+        returnStation = await Http.GetFromJsonAsync<Station>($"api/stations/{trip.ReturnStationId}");
+        returned = new Map.LoadParameters()
+        {
+                location = new Map.Location
+                {
+                    latitude = returnStation.Y,
+                    longitude = returnStation.X
+                },
+                zoom_level = 20,
+        };
+        
     }
 }
