@@ -6,19 +6,22 @@
 
 <PageTitle>Stations</PageTitle>
 
-@if (list != null)
+<div class="childDiv">
+    <label>Stations count</label>
+    <input type="number" class="form-control" min="1" max="100" @bind-value="takeCount" />
+    <label>Search Station Names</label>
+    <input type="text" class="form-control" @bind-value="stationName" />
+    <label>Search Station Addresses</label>
+    <input type="text" class="form-control" @bind-value="stationAddress" />
+    <label>Station Min Capacity</label>
+    <input type="number" class="form-control" @bind-value="stationCapacity" />
+    <button class="btn btn-primary" @onclick="FilterList">Filter</button>
+    <button class="btn btn-danger ml-2" @onclick="ClearFilters">Clear Filters</button>
+</div>
+
+@if (filteredList != null)
 {
-    <div class="childDiv">
-        <label>Stations count</label>
-        <input type="number" class="form-control" min="1" max="@list.Count" @bind-value="takeCount" />
-        <label>Search Station Names</label>
-        <input type="text" class="form-control" @bind-value="stationName" />
-        <label>Search Station Addresses</label>
-        <input type="text" class="form-control" @bind-value="stationAddress" />
-        <label>Station Capacity</label>
-        <input type="number" class="form-control" @bind-value="stationCapacity" />
-        <button class="btn btn-primary" @onclick="FilterList">Filter</button>
-    </div>
+
     <div class="mainDiv">
 
         @foreach (var station in filteredList)
@@ -27,7 +30,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Station ID</th>
+                         
                             <th>Station Name</th>
                             <th>Station Address</th>
                             <th>Station Capacity</th>
@@ -35,13 +38,13 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>@station.ID</td>
+                  
                             <td>@station.Nimi</td>
                             <td>@station.Osoite</td>
                             <td>@station.Kapasiteet</td>
                         </tr>
                         <tr>
-                            <td colspan="4"><p>map coming soon..</p></td>
+                            <td colspan="4"><p>Map coming soon..</p></td>
                         </tr>
                     </tbody>
                 </table>
@@ -78,11 +81,20 @@ else
     {
         filteredList = list
             .Where(station =>
-                (string.IsNullOrEmpty(station.Nimi) || station.Nimi.StartsWith(stationName))
-                && (string.IsNullOrEmpty(station.Osoite) || station.Osoite.StartsWith(stationAddress))
-                && (station.Kapasiteet >= stationCapacity)
+            (string.IsNullOrEmpty(station.Nimi) || station.Nimi.ToUpper().StartsWith(stationName.ToUpper()))
+    && (string.IsNullOrEmpty(station.Osoite) || station.Osoite.ToUpper().StartsWith(stationAddress.ToUpper()))
+    && (station.Kapasiteet >= stationCapacity)
+
             )
             .Take(takeCount)
             .ToList();
     }
+    private void ClearFilters()
+    {
+        stationName = "";
+        stationAddress = "";
+        stationCapacity = 1;
+        FilterList();
+    }
+
 }
