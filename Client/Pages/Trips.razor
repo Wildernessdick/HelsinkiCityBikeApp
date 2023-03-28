@@ -48,7 +48,7 @@
                     
                             <td>@trip.Return</td>
                             <td>@trip.ReturnStationName</td>
-                            <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo($"/tripDetails/{trip.ID}"))">Details</button>
+                            <td> <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo($"/tripDetails/{trip.ID}"))">Details</button></td>
                         </tr>
                  
                 </tbody>

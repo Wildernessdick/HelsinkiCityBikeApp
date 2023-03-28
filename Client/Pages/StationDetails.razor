@@ -46,7 +46,7 @@
 </div>
 @code {
     [Parameter]
-    public string ID { get; set; }
+    public int ID { get; set; }
 
 
     private List<Station>? list;
@@ -55,8 +55,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-     
-            list = await Http.GetFromJsonAsync<List<Station>>($"api/stations/{ID}");
+        Console.WriteLine(ID);
+        list = await Http.GetFromJsonAsync<List<Station>>($"api/stations/{ID}");
            
         
     }
