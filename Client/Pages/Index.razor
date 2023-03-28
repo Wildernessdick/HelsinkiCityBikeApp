@@ -1,28 +1,83 @@
 ﻿@page "/"
 @using System.Net.Http;
+@using System.Linq;
+@using HelsinkiCityBikeApp.Shared;
 @inject HttpClient Http;
 
 <PageTitle>Index</PageTitle>
 
-
 <div class="mainDiv">
 
-        <div class="childDiv">
-        <h3>Hello, biker!</h3>
-       
-        </div>
     <div class="childDiv">
-        <h3>@(isRequestSuccessful ? "API is responsing? " : "API is responsing? ")<img src="@(isRequestSuccessful ? "/img/true.png" : "/img/false.png")" /></h3>
+        <h3>Hello, biker!</h3>
+        <p>On this app, I have limited the amount of trips to 100, with hardcode on TripController.</p>
+    </div>
+
+    <div class="childDiv">
+        <h3>@(isRequestSuccessful ? "API is responding: " : "API is not responding: ")<img src="@(isRequestSuccessful ? "/img/true.png" : "/img/false.png")" /></h3>
+        <p>If the light is green, we are good to go, API is running.</p>
+        <p>If the light is red, we might have a problem...</p>
+    </div>
+
+
+    <div class="childDiv"></div>
+
+
+
+
+    <div class="childDiv">
+        <h3>Top 5 most popular departure stations:</h3>
+        <ul>
+            @foreach (var station in top5DepartureStations)
+            {
+                <li>@station.Name - @station.Count trips</li>
+            }
+        </ul>
+    </div>
+    <div class="childDiv">
+        <h3>Top 5 most popular return stations:</h3>
+        <ul>
+            @foreach (var station in top5ReturnStations)
+            {
+                <li>@station.Name - @station.Count trips</li>
+            }
+        </ul>
     </div>
 </div>
 
 @code {
     private bool isRequestSuccessful = false;
+    private List<Trip> trips;
+    private List<Station> top5DepartureStations;
+    private List<Station> top5ReturnStations;
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await Http.GetAsync("api/stations");
+        var response = await Http.GetAsync("api/trips");
         isRequestSuccessful = response.IsSuccessStatusCode;
-        Console.WriteLine(response);
+        if (isRequestSuccessful)
+        {
+            trips = await response.Content.ReadFromJsonAsync<List<Trip>>();
+            top5DepartureStations = trips
+                .GroupBy(t => t.DepartureStationName)
+                .Select(g => new Station { Name = g.Key, Count = g.Count() })
+                .OrderByDescending(s => s.Count)
+                .Take(5)
+                .ToList();
+
+            top5ReturnStations = trips
+                .GroupBy(t => t.ReturnStationName)
+                .Select(g => new Station { Name = g.Key, Count = g.Count() })
+                .OrderByDescending(s => s.Count)
+                .Take(5)
+                .ToList();
+        }
     }
+
+    private class Station
+    {
+        public string Name { get; set; }
+        public int Count { get; set; }
+    }
+
 }
