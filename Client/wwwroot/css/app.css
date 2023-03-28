@@ -1,6 +1,14 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
-/*my css starts here*/
+/*my class css starts here*/
+.sidebar {
+}
+
+.logo {
+    padding: 20px;
+    height: 150px;
+}
+
 .loadingDiv {
     display: block;
     margin-left: auto;
@@ -10,24 +18,59 @@
 
 .mainDiv {
     padding: 20px;
+    display: flex;
+    flex-wrap: wrap; /* enable wrapping of child elements */
+    gap: 20px; /* add space between child divs */
 }
+
+
 
 .childDiv {
     padding: 20px;
-    margin-bottom: 10px; /* add margin to create space between stationDiv elements */
-    border: 5px solid #457b9d; /* add border to stationDiv elements */
+    margin-bottom: 10px;
+    border: 5px solid #457b9d;
     background-color: #a8dadc;
     border-radius: 25px;
+    flex-basis: calc(33.33% - 20px); /* set initial width of child elements */
+    max-width: calc(33.33% - 20px); /* set maximum width of child elements */
 }
 
-.sidebar {
-
+/* Styles for screens smaller than 768px */
+@media only screen and (max-width: 767px) {
+    .childDiv {
+        flex-basis: calc(50% - 10px); /* set initial width of child elements */
+        max-width: calc(50% - 10px); /* set maximum width of child elements */
+    }
 }
-.logo {
-    padding: 20px;
-    height: 150px;
+
+/* Styles for screens smaller than 480px */
+@media only screen and (max-width: 479px) {
+    .childDiv {
+        flex-basis: 100%; /* set child elements to take up full width */
+        max-width: 100%; /* set maximum width of child elements to 100% */
+    }
 }
 
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+
+
+/*My class csss ends here*/
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -35,7 +78,6 @@ html, body {
     background-image: url("/img/background.png");
     background-attachment: fixed;
     background-position: center;
-    
 }
 
 h1:focus {

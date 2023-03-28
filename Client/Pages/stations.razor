@@ -16,9 +16,27 @@
         @foreach (var station in list)
         {
             <div class="childDiv">
-                <p class="PstationName">@station.Nimi</p>
-                <p class="PstationAddres">@station.Osoite</p>
-                <p class="PstationBikes">@station.Kapasiteet</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Station ID</th>
+                            <th>Station Name</th>
+                            <th>Station Address</th>
+                            <th>Station Capacity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    
+                        
+                            <tr>
+                                <td>@station.Id</td>
+                                <td>@station.Nimi</td>
+                                <td>@station.Osoite</td>
+                                <td>@station.Kapasiteet</td>
+                            </tr>
+                        
+                    </tbody>
+                </table>
              </div>
         }
     </div>
