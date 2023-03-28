@@ -9,13 +9,57 @@
 
 <div class="mainDiv">
 
-    <div class="childDiv">
-        <h3>Trip Details</h3>
-    </div>
+    @if (trip != null)
+    {
+        
+            <div class="childDiv" >
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Departure</th>
+                            <th>Departure Station Name</th>
+
+
+                            <th>Return</th>
+                            <th>Return Station Name</th>
+
+                        <th>Covered Distance</th>
+                        <th>Duration</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        <tr>
+                            <td>@trip.ID</td>
+                            <td>@trip.Departure</td>
+                            <td>@trip.DepartureStationName</td>
+
+                            <td>@trip.Return</td>
+                            <td>@trip.ReturnStationName</td>
+                            <td>@trip.CoveredDistance</td>
+                            <td>@trip.Duration</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        }       
+    else
+    {
+        <div class="childDiv">  <h2><img src="/img/loading.gif" width="150" /></h2></div>
+    }
+
 </div>
 @code {
     [Parameter]
     public string ID { get; set; }
+    private Trip trip;
+protected override async Task OnInitializedAsync()
+    {
+        trip = await Http.GetFromJsonAsync<Trip>($"api/Trips/{ID}");
 
-    // Rest of the component code here
+    }
 }

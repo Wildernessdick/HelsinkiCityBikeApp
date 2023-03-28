@@ -1,15 +1,15 @@
 ﻿@page "/stationsDetails/{ID:int}"
 @using HelsinkiCityBikeApp.Shared;
 @using System.Net.Http;
+@using Blazorise;
+@using LeafletForBlazor;
+
 @inject HttpClient Http;
 @inject NavigationManager NavigationManager
 
-
 <PageTitle>Station Details</PageTitle>
 
-
 <div class="mainDiv">
-
     @if (station != null)
     {
         <div class="childDiv">
@@ -22,7 +22,7 @@
                         <th>Station Address</th>
                         <th>Station Capacity</th>
                         <th>Latitude</th>
-                        <th>longitude</th>
+                        <th>Longitude</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,6 +35,11 @@
                         <td>@station.X</td>
                         <td>@station.Y</td>
                     </tr>
+                    <tr>
+                        <td colspan="7">
+                            <Map width="600px" height="600px" Parameters="@parameters" ></Map>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -43,7 +48,6 @@
     {
         <p>No station found with ID @ID</p>
     }
-
 </div>
 
 @code {
@@ -51,9 +55,22 @@
     public int ID { get; set; }
 
     private Station station;
+    private Map.LoadParameters parameters;
 
     protected override async Task OnInitializedAsync()
     {
         station = await Http.GetFromJsonAsync<Station>($"api/stations/{ID}");
+        parameters = new Map.LoadParameters
+            {
+
+                location = new Map.Location
+                {
+                    latitude = station.Y,
+                    longitude = station.X
+                },
+                zoom_level = 20
+
+            };
     }
+    /*https://github.com/ichim/LeafletForBlazor-NuGet*/
 }
