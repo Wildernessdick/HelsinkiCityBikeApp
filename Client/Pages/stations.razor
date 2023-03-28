@@ -6,14 +6,22 @@
 
 <PageTitle>Stations</PageTitle>
 
-
-
-
 @if (list != null)
 {
+    <div class="childDiv">
+        <label>Stations count</label>
+        <input type="number" class="form-control" min="1" max="@list.Count" @bind-value="takeCount" />
+        <label>Search Station Names</label>
+        <input type="text" class="form-control" @bind-value="stationName" />
+        <label>Search Station Addresses</label>
+        <input type="text" class="form-control" @bind-value="stationAddress" />
+        <label>Station Capacity</label>
+        <input type="number" class="form-control" @bind-value="stationCapacity" />
+        <button class="btn btn-primary" @onclick="FilterList">Filter</button>
+    </div>
     <div class="mainDiv">
-             <div class="childDiv">Lorem ipsum</div>
-        @foreach (var station in list)
+
+        @foreach (var station in filteredList)
         {
             <div class="childDiv">
                 <table>
@@ -26,18 +34,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                    
-                        
-                            <tr>
-                                <td>@station.Id</td>
-                                <td>@station.Nimi</td>
-                                <td>@station.Osoite</td>
-                                <td>@station.Kapasiteet</td>
-                            </tr>
-                        
+                        <tr>
+                            <td>@station.ID</td>
+                            <td>@station.Nimi</td>
+                            <td>@station.Osoite</td>
+                            <td>@station.Kapasiteet</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"><p>map coming soon..</p></td>
+                        </tr>
                     </tbody>
                 </table>
-             </div>
+            </div>
         }
     </div>
 }
@@ -45,9 +53,15 @@ else
 {
     <h2><img src="/img/loading.gif" width="150" /></h2>
 }
+
 @code {
     private bool isRequestSuccessful = false;
     private List<Station> list = new List<Station>();
+    private List<Station> filteredList = new List<Station>();
+    private int takeCount = 10;
+    private string stationName = "";
+    private string stationAddress = "";
+    private int stationCapacity = 1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -56,7 +70,19 @@ else
         if (isRequestSuccessful)
         {
             list = await Http.GetFromJsonAsync<List<Station>>("api/stations");
+            FilterList();
         }
-        
+    }
+
+    private void FilterList()
+    {
+        filteredList = list
+            .Where(station =>
+                (string.IsNullOrEmpty(station.Nimi) || station.Nimi.StartsWith(stationName))
+                && (string.IsNullOrEmpty(station.Osoite) || station.Osoite.StartsWith(stationAddress))
+                && (station.Kapasiteet >= stationCapacity)
+            )
+            .Take(takeCount)
+            .ToList();
     }
 }

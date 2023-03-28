@@ -17,7 +17,8 @@ namespace HelsinkiCityBikeApp.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetStations()
         {
-            var stations = await _context.Stations.ToListAsync();
+            var stations = await _context.Stations.OrderBy(s => s.ID).ToListAsync();
+
             return Ok(stations);
         }
         [HttpGet("{id}")]

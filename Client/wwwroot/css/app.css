@@ -21,6 +21,7 @@
     display: flex;
     flex-wrap: wrap; /* enable wrapping of child elements */
     gap: 20px; /* add space between child divs */
+
 }
 
 
@@ -32,28 +33,29 @@
     background-color: #a8dadc;
     border-radius: 25px;
     flex-basis: calc(33.33% - 20px); /* set initial width of child elements */
-    max-width: calc(33.33% - 20px); /* set maximum width of child elements */
+    //max-width: calc(33.33% - 20px); /* set maximum width of child elements */
+    //overflow-x: auto;
 }
 
 /* Styles for screens smaller than 768px */
-@media only screen and (max-width: 767px) {
+/*@media only screen and (max-width: 767px) {
     .childDiv {
-        flex-basis: calc(50% - 10px); /* set initial width of child elements */
-        max-width: calc(50% - 10px); /* set maximum width of child elements */
-    }
-}
+        flex-basis: calc(50% - 10px);*/ /* set initial width of child elements */
+        /*max-width: calc(50% - 10px);*/ /* set maximum width of child elements */
+    /*}
+}*/
 
 /* Styles for screens smaller than 480px */
-@media only screen and (max-width: 479px) {
+/*@media only screen and (max-width: 479px) {
     .childDiv {
-        flex-basis: 100%; /* set child elements to take up full width */
-        max-width: 100%; /* set maximum width of child elements to 100% */
-    }
-}
+        flex-basis: 100%;*/ /* set child elements to take up full width */
+        /*max-width: 100%;*/ /* set maximum width of child elements to 100% */
+    /*}
+}*/
 
 table {
     border-collapse: collapse;
-    width: 100%;
+  
     margin-bottom: 20px;
 }
 
