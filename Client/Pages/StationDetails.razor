@@ -57,10 +57,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        //Here we are using the HttpClient to get the data from the API, about the station with the ID we got from the URL
         station = await Http.GetFromJsonAsync<Station>($"api/stations/{ID}");
         parameters = new Map.LoadParameters
             {
-
+                //we set stations location to map from x and y from the object
                 location = new Map.Location
                 {
                     latitude = station.Y,

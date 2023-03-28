@@ -76,6 +76,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        //checks thath api is running
         var response = await Http.GetAsync("api/trips");
         if (response.IsSuccessStatusCode)
         {
@@ -84,11 +85,11 @@
             FilterList();
         }
     }
-
-     
+    //To be rebel, we dont have SHTF option at all....
     
     private void FilterList()
     {
+        //Here we filter data with inputs
         filteredList = list
             .Where(trip =>
                 (string.IsNullOrEmpty(depatureStationName) || trip.DepartureStationName.ToUpper().StartsWith(depatureStationName.ToUpper()))
@@ -101,6 +102,7 @@
     }
     private void ClearFilters()
     {
+        // i know, that you know, what happens here<3
         takeCount = 100;
         depatureStationName = "";
         returnStationName = "";

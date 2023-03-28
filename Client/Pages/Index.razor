@@ -53,10 +53,13 @@
 
     protected override async Task OnInitializedAsync()
     {
+
+        //This is the call to the API, so we can get the info is the API is running
         var response = await Http.GetAsync("api/trips");
         isRequestSuccessful = response.IsSuccessStatusCode;
         if (isRequestSuccessful)
         {
+            //here we get most popular stations (departure and return)
             trips = await response.Content.ReadFromJsonAsync<List<Trip>>();
             top5DepartureStations = trips
                 .GroupBy(t => t.DepartureStationName)

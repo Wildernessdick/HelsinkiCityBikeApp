@@ -73,6 +73,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        //we will get all the stations, but by default we will only show 50 of them
         var response = await Http.GetAsync("api/stations");
         isRequestSuccessful = response.IsSuccessStatusCode;
         if (isRequestSuccessful)
@@ -84,6 +85,7 @@
 
     private void FilterList()
     {
+        //we filter data from the list, not from the API, because we want to be able to filter the data even if we have already filtered it
         filteredList = list
             .Where(station =>
             (string.IsNullOrEmpty(station.Nimi) || station.Nimi.ToUpper().StartsWith(stationName.ToUpper()))
@@ -96,6 +98,7 @@
     }
     private void ClearFilters()
     {
+        //Returns all the data to the list, note, that there is more data in the list than we are showing in the pages by default.
         stationName = "";
         stationAddress = "";
         stationCapacity = 1;

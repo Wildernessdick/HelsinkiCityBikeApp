@@ -53,12 +53,12 @@
             
             <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo($"/stationsDetails/{departureStation.ID}"))">@departureStation.Nimi</button>
 <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo($"/stationsDetails/{returnStation.ID}"))">@returnStation.Nimi</button>
-            
-        
+
+            <p>Number of trips started here: </p>
+            <p>Number of trips ended here: </p>
         </div>
 
         <div class="childDiv">   <h2>Departure Station Location</h2>  <Map width="600px" height="600px" Parameters="@departure"></Map></div>
-
         <div class="childDiv">   <h2>Return Station Location</h2>  <Map width="600px" height="600px" Parameters="@returned"></Map></div>
         }       
     else
@@ -77,11 +77,12 @@
     private Map.LoadParameters returned;
 protected override async Task OnInitializedAsync()
     {
+        //Lets get the trip details with id
         trip = await Http.GetFromJsonAsync<Trip>($"api/Trips/{ID}");
-        
+
+
+        //here we insert cordinates from object to maps.
         departureStation = await Http.GetFromJsonAsync<Station>($"api/stations/{trip.DepartureStationId}");
-   
-        
         departure = new Map.LoadParameters()
         {
                 location = new Map.Location
@@ -91,6 +92,7 @@ protected override async Task OnInitializedAsync()
                 },
                 zoom_level = 20,
         };
+        //it seems like, this nugget dosent wantto load two maps to same page :(
         returnStation = await Http.GetFromJsonAsync<Station>($"api/stations/{trip.ReturnStationId}");
         returned = new Map.LoadParameters()
         {
