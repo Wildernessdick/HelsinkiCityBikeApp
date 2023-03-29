@@ -42,7 +42,7 @@
             </table>
         </div>
         <div class="childDiv">
-            <h3>@station.Name</h3>
+            <h3>@station.Nimi</h3>
             <p>@startingJourneyCount trip(s) started here</p>
             <p>@endingJourneyCount trip(s) ended here</p>
             <p>Average distance of starting trips: @string.Format("{0:0.##}", startAverageDistance / 1000) km</p>
@@ -50,11 +50,35 @@
 
         </div>
 
+@*    
+    
+    <div class="childDiv">
+            <p>Top 5 most popular return stations for journeys starting from this station:</p>
+            <ul>
+                @foreach (var returnStation in topReturnStationsStartingFromStation)
+                {
+                    <li>@returnStation.Nimi </li>
+                }
+            </ul>
+        </div>
+
+        <div class="childDiv">
+            <p>Top 5 most popular departure stations for journeys ending at this station:</p>
+            <ul>
+                @foreach (var departureStation in topDepartureStationsEndingAtStation)
+                {
+                    <li>@departureStation.Nimi </li>
+                }
+            </ul>
+        </div>
+        
+        *@
+ 
 
     }
     else
     {
-        <div class="childDiv">  <img src="/img/loading.gif" width="150" /></div>
+        <div class="childDiv">  <img src="/img/loading.gif" width="150" /> <h4>This might take a bit, go get some popcorn</h4></div>
     }
 </div>
 
@@ -69,7 +93,9 @@
     private int endingJourneyCount;
     private double startAverageDistance;
     private double endAverageDistance;
-
+    //listing the top stations
+    private List<Station> topReturnStationsStartingFromStation;
+    private List<Station> topDepartureStationsEndingAtStation;
 
     protected override async Task OnInitializedAsync()
     {
@@ -96,11 +122,19 @@
         var tripsEndingAtStation = await response.Content.ReadFromJsonAsync<List<Trip>>();
         endingJourneyCount = tripsEndingAtStation?.Count ?? 0;
 
-        response = await Http.GetAsync($"api/trips/startStation/{station.ID}/averageDistance");
+        response = await Http.GetAsync($"api/trips/startStation/{ID}/averageDistance");
         startAverageDistance = await response.Content.ReadFromJsonAsync<double>();
 
-        response = await Http.GetAsync($"api/trips/endStation/{station.ID}/averageDistance");
+        response = await Http.GetAsync($"api/trips/endStation/{ID}/averageDistance");
         endAverageDistance = await response.Content.ReadFromJsonAsync<double>();
+
+
+
+        //response = await Http.GetAsync($"api/trips/returnStations/{ID}");
+        //topReturnStationsStartingFromStation = await response.Content.ReadFromJsonAsync<List<Station>>();
+
+        //response = await Http.GetAsync($"api/trips/departureStations/{ID}");
+        //topDepartureStationsEndingAtStation = await response.Content.ReadFromJsonAsync<List<Station>>();
 
 
     }

@@ -67,6 +67,53 @@ namespace HelsinkiCityBikeApp.Server.Controllers
             return tripsEndingAtStation.Average(t => t.CoveredDistance);
         }
 
+        //Top stations for end the trip
+
+        [HttpGet("returnStations/{id}")]
+        public async Task<ActionResult<List<Station>>> GetTopReturnStationsStartingFromStation(int id)
+        {
+            var tripsStartingFromStation = await _context.Trips.Where(t => t.DepartureStationId == id).ToListAsync();
+            var returnStationsStartingFromStation = tripsStartingFromStation
+                .GroupBy(t => t.ReturnStationId)
+                .Select(g => new { StationId = g.Key, Count = g.Count() })
+                .OrderByDescending(r => r.Count)
+                .Take(5)
+                .ToList();
+
+
+            var topStations = await _context.Stations
+                .Where(s => returnStationsStartingFromStation.Any(r => r.StationId == s.ID))
+                .ToListAsync();
+
+            return topStations;
+        }
+        //top stations to start the trip
+        [HttpGet("departureStations/{id}")]
+        public async Task<ActionResult<List<Station>>> GetTopDepartureStationsEndingAtStation(int id)
+        {
+            var tripsEndingAtStation = await _context.Trips.Where(t => t.ReturnStationId == id).ToListAsync();
+            var departureStationsEndingAtStation = tripsEndingAtStation
+            .GroupBy(t => t.DepartureStationId)
+            .Select(g => new { StationId = g.Key, Count = g.Count() })
+            .OrderByDescending(r => r.Count)
+            .Take(5)
+            .ToList();
+
+            var stationIds = departureStationsEndingAtStation.Select(r => r.StationId).ToList();
+            var stations = await _context.Stations.Where(s => stationIds.Contains(s.ID)).ToListAsync();
+
+            return stations;
+        }
+
+
+
+
+
+
+
+
+
+        //For now, we are not adding, deleting or updating trips. But if we would, we would use these methods:
         [HttpPost]
         public async Task<ActionResult<Trip>> PostTrip(Trip trip)
         {
