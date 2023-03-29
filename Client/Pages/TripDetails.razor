@@ -41,8 +41,9 @@
 
                             <td>@trip.Return</td>
                             <td>@trip.ReturnStationName</td>
-                            <td> @string.Format("{0:0.##}",trip.CoveredDistance / 1000)</td>
-                            <td> @string.Format("{0:0.##}",trip.Duration / 60)</td>
+                        <td> @string.Format("{0:0.00}", (double)trip.CoveredDistance / 1000)</td>
+
+                        <td> @string.Format("{0:0.00}", (double)trip.Duration / 60)</td>
                         </tr>
 
                     </tbody>
