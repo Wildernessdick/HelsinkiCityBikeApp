@@ -13,9 +13,9 @@
 
     @if (trip != null)
     {
-        
-            <div class="childDiv" >
-                <table>
+
+        <div class="childDiv" >
+            <table width="600px">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -26,8 +26,8 @@
                             <th>Return</th>
                             <th>Return Station Name</th>
 
-                        <th>Covered Distance (m)</th>
-                        <th>Duration (sec)</th>
+                        <th>Covered Distance (Km)</th>
+                        <th>Duration (Min)</th>
                             
                         </tr>
                     </thead>
@@ -41,16 +41,16 @@
 
                             <td>@trip.Return</td>
                             <td>@trip.ReturnStationName</td>
-                            <td>@trip.CoveredDistance</td>
-                            <td>@trip.Duration</td>
+                            <td> @string.Format("{0:0.##}",trip.CoveredDistance / 1000)</td>
+                            <td> @string.Format("{0:0.##}",trip.Duration / 60)</td>
                         </tr>
 
                     </tbody>
                 </table>
             </div>
 
-        <div class="childDiv">  
-            
+        <div class="childDiv" >
+
             <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo($"/stationsDetails/{departureStation.ID}"))">@departureStation.Nimi</button>
 <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo($"/stationsDetails/{returnStation.ID}"))">@returnStation.Nimi</button>
 
