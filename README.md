@@ -12,6 +12,10 @@ I chose .NET Blazor Webassembly app technology for this task because I didn't ha
 
 SQLite was chosen as the project's database. Initially, I planned to use Mongo DB, but there was too much data for a free subscription, even after removing the requested parts before transferring the data to the server. While developing the program, I had to hardcode a limit on the amount of data retrieved, so Mongo DB might have worked better in the end. I take this as a learning experience. NOTE: The database is not included in the repository because its size is over 500mb. It can be downloaded from here (link coming later) and must be placed in the root of the server folder.
 
+# Blazor webassembly
+
+Blazor WebAssembly is a web application framework by Microsoft that enables developers to build interactive web applications using C# instead of JavaScript. It allows developers to create and run client-side web applications entirely in the browser, without the need for server-side code. This approach provides a more seamless experience for the user and enables better performance and security.
+
 # Views
 
 The project has five views (pages).
