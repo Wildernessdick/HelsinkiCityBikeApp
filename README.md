@@ -2,7 +2,7 @@
 
 # Project Background
 
-This project is based on the [Solita Dev Academy pre-assignment](https://github.com/solita/dev-academy-2023-exercise). The task was to create a user interface and backend service to display information about city bike trips in the metropolitan area.
+This project is based on the [Solita Dev Academy pre-assignment](https://github.com/solita/dev-academy-2023-exercise) (I didn't apply for the position). The task was to create a user interface and backend service to display information about city bike trips in the metropolitan area in summer 2021.
 
 # Implementation
 
@@ -46,6 +46,8 @@ Displays the selected station's information.
 - Add more responsiveness
 - Virtual pages for trips
 - fix css issues with element sizes
+- Add rest of the statics
+- something special <3
 
 # Graphics
 
